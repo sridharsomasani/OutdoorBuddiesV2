@@ -1,0 +1,64 @@
+CREATE DATABASE OutdoorBuddies;
+USE OutdoorBuddies;
+
+
+CREATE TABLE UserProfile ( 
+	user_id INT NOT NULL AUTO_INCREMENT,
+	firstname VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	username VARCHAR(255) NOT NULL,
+	passwd VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	dob DATE,
+	gender CHAR(1),
+	mobile CHAR(10),
+	address VARCHAR(255),
+	imageurl VARCHAR(255),
+	createddate DATE,
+	CONSTRAINT pk_UserID PRIMARY KEY(user_id)
+);
+
+CREATE TABLE GameEvents ( 
+	event_id INT NOT NULL AUTO_INCREMENT,
+	game_id INT NOT NULL,
+	isCompleted TINYINT NOT NULL DEFAULT 0,
+	event_date DATE,
+	event_start_time VARCHAR(5) NOT NULL,
+	event_end_time VARCHAR(5) NOT NULL,
+	event_place VARCHAR(255) NOT NULL,
+	event_address VARCHAR(255) NOT NULL,
+	create_date DATE,
+	modified_date DATE,
+	CONSTRAINT pk_EventID PRIMARY KEY(event_id),
+	CONSTRAINT fk_GameID FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+CREATE TABLE EventParticipants(
+	event_participant_id INT NOT NULL AUTO_INCREMENT,
+	event_id INT NOT NULL,
+	user_id INT NOT NULL,
+	accept TINYINT NOT NULL DEFAULT 0,
+	is_attended TINYINT NOT NULL DEFAULT 0,
+	feedback VARCHAR(255),
+	expertise INT DEFAULT 0,
+	CONSTRAINT pk_EventParticipantsID PRIMARY KEY(event_participant_id),
+	CONSTRAINT fk_EventParticipants_UserID FOREIGN KEY(user_id) REFERENCES UserProfile(user_id),
+	CONSTRAINT fk_EventParticipants_EventID FOREIGN KEY(event_id) REFERENCES GameEvents(event_id)	
+);
+
+CREATE TABLE EventGallery(
+	gallery_id INT NOT NULL AUTO_INCREMENT,
+	event_id INT NOT NULL,
+	description VARCHAR(255),
+	image_url VARCHAR(255) NOT NULL,
+	CONSTRAINT pk_EventGalleryID PRIMARY KEY(gallery_id),
+	CONSTRAINT fk_EventGallery_EventID FOREIGN KEY(event_id) REFERENCES GameEvents(event_id)
+);
+
+ CREATE TABLE Games ( 
+	game_id INT NOT NULL,
+	game_name VARCHAR(255) NOT NULL,
+	game_desc VARCHAR(255) NOT NULL,
+	create_date DATE,
+	CONSTRAINT pk_GameID PRIMARY KEY(game_id)
+);
