@@ -2,10 +2,13 @@ package com.outdoor.buddies.jpa.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,12 +27,14 @@ public class UserProfile {
 	
 	private String lastName;
 	
+	@Column(unique=true, nullable=false)
 	private String userName;
 	
 	private String displayName;
 	
 	private String password;
 	
+	@Column(unique=true, nullable=false)
 	private String emailId;
 	
 	@Temporal(TemporalType.DATE)
@@ -55,6 +60,19 @@ public class UserProfile {
 	@JsonIgnoreProperties
 	private Date lastLogin;
 
+    @PreUpdate
+    public void preUpdate() {
+    	lastModified = new Date();
+    }
+     
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        createDate = now;
+        lastModified = now;
+    }
+		
+	
 	public Long getUserId() {
 		return userId;
 	}

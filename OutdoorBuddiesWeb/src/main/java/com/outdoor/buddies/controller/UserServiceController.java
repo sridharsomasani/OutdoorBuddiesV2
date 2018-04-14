@@ -1,13 +1,17 @@
 package com.outdoor.buddies.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.outdoor.buddies.jpa.entity.UserProfile;
 import com.outdoor.buddies.repository.UserProfileRepository;
 
 @RestController
@@ -23,16 +27,19 @@ public class UserServiceController {
 	}
 	
 	@RequestMapping(value="/register", method= RequestMethod.POST)
-	public String registerUser(@RequestParam Map<String, String> params) {
+	public UserProfile registerUser(@RequestBody UserProfile user) {
+		return userProfileRepository.save(user);
 		
-		
-		
-		return "";
 	}
 	
-	@RequestMapping(value="/searchUser", method= RequestMethod.GET)
-	public String searchUsers(@RequestParam Map<String, String> params) {
-		return "";
+	@RequestMapping(value="/searchByUsername", method= RequestMethod.GET)
+	public UserProfile searchUsers(@RequestParam String userName) {
+		return userProfileRepository.findByUserName(userName);
+	}
+	
+	@RequestMapping(value="/{userId}", method= RequestMethod.GET)
+	public Optional<UserProfile> findUser(@PathVariable("userId") long userId ) {
+		return userProfileRepository.findById(userId);
 	}
 	
 }

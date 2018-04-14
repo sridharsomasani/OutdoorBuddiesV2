@@ -6,6 +6,7 @@ import com.outdoor.buddies.jpa.entity.UserProfile;
 
 public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
 
+	public UserProfile findByUserName(String userName);
 	
 
 }
