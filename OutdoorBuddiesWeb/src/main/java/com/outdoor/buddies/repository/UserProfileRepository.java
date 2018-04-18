@@ -8,5 +8,11 @@ public interface UserProfileRepository extends CrudRepository<UserProfile, Long>
 
 	public UserProfile findByUserName(String userName);
 	
+	public UserProfile findByEmailId(String emailId);
+	
+	
+	
+	
+	
 
 }
