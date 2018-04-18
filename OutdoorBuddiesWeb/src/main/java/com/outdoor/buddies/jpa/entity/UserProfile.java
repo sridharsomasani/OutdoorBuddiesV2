@@ -71,7 +71,8 @@ public class UserProfile {
         createDate = now;
         lastModified = now;
     }
-		
+	
+	
 	
 	public Long getUserId() {
 		return userId;
