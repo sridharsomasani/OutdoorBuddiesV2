@@ -1,8 +1,5 @@
 package com.outdoor.buddies.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.outdoor.buddies.jpa.entity.UserProfile;
 
 public interface UserService {
@@ -13,11 +10,9 @@ public interface UserService {
 
 	UserProfile updateUser(UserProfile user, Long userId);
 
-	Optional<UserProfile> findUser(Long userId);
+	UserProfile findUser(Long userId);
 
-	void deleteUser(Long userId);
-
-	Iterable<UserProfile> updateUsers(List<UserProfile> users);
+	UserProfile deleteUser(Long userId);
 
 	UserProfile findByUserName(String userName);
 
