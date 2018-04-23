@@ -12,6 +12,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -23,29 +25,37 @@ public class UserProfile {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long userId;
 	
+	@NotEmpty(message="firstname cannot be blank")
 	private String firstName;
 	
+	@NotEmpty(message="lastname cannot be blank")
 	private String lastName;
 	
+	@NotEmpty(message="username field cannot be blank")
 	@Column(unique=true, nullable=false)
 	private String userName;
 	
+	@NotEmpty(message="display cannot be blank")
 	private String displayName;
 	
 	private String password;
 	
+	@NotEmpty(message="email id field cannot be blank")
 	@Column(unique=true, nullable=false)
 	private String emailId;
 	
+	@NotNull(message="DOB field cannot be blank")
 	@Temporal(TemporalType.DATE)
 	private Date dob;
 	
+	@NotEmpty(message="gender field cannot be blank")
 	private String gender;
 	
 	private String mobileNumber;
 	
 	private String address;
 	
+	@JsonIgnoreProperties
 	private String imageUrl;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -63,6 +73,7 @@ public class UserProfile {
     @PreUpdate
     public void preUpdate() {
     	lastModified = new Date();
+    	setDefaultImage();
     }
      
     @PrePersist
@@ -70,10 +81,17 @@ public class UserProfile {
         Date now = new Date();
         createDate = now;
         lastModified = now;
+        setDefaultImage();
     }
 	
-	
-	
+	private void setDefaultImage() {
+        if(imageUrl == null || "".equals(imageUrl)) {
+        	String mGender = getGender().equals("Male") ? "/resources/static/male.jpg" : "/resources/static/female.jpg";
+        	setImageUrl(mGender);
+        }
+		
+	}
+    
 	public Long getUserId() {
 		return userId;
 	}
