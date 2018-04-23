@@ -37,10 +37,6 @@ public class UserServiceController{
 	@RequestMapping(value="/{userId}", method= RequestMethod.PUT)
 	public UserProfile updateUser(@RequestBody @Valid UserProfile user, @PathVariable("userId") Long userId) {
 		UserProfile dbUser = userProfileService.updateUser(user, userId);
-		if(dbUser == null) {
-			//handle with appropriate HTTP status code and message
-			return null;
-		}
 		return dbUser;
 		
 	}
@@ -48,10 +44,6 @@ public class UserServiceController{
 	@RequestMapping(value="/{userId}", method= RequestMethod.GET)
 	public UserProfile findUser(@PathVariable("userId") Long userId ) {
 		UserProfile dbUser = userProfileService.findUser(userId);
-		if(dbUser == null) {
-			//handle with appropriate HTTP status code and message
-			return null;
-		}
 		return dbUser;
 	}
 	
@@ -59,30 +51,18 @@ public class UserServiceController{
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public UserProfile deleteUser(@PathVariable("userId") Long userId ) {
 		UserProfile dbUser = userProfileService.deleteUser(userId);
-		if(dbUser == null) {
-			//handle with appropriate HTTP status code and message
-			return null;
-		}
 		return dbUser;
 	}
 	
 	@RequestMapping(value="/username/{uName}", method= RequestMethod.GET)
 	public UserProfile findByUserName(@PathVariable("uName") String userName) {
 		UserProfile dbUser = userProfileService.findByUserName(userName);
-		if(dbUser == null) {
-			//handle with appropriate HTTP status code and message
-			return null;
-		}
 		return dbUser;
 	}
 	
 	@RequestMapping(value="/email/{param}", method= RequestMethod.GET)
 	public UserProfile findByEmail(@PathVariable("param") String emailId) {
 		UserProfile dbUser = userProfileService.findByEmail(emailId);
-		if(dbUser == null) {
-			//handle with appropriate HTTP status code and message
-			return null;
-		}
 		return dbUser;
 	}
 	
