@@ -2,6 +2,8 @@ package com.outdoor.buddies.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -13,7 +15,7 @@ import com.outdoor.buddies.jpa.entity.UserProfile;
 import com.outdoor.buddies.repository.UserProfileRepository;
 
 @Service
-final class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -33,6 +35,17 @@ final class UserServiceImpl implements UserService{
 	@Override
 	public UserProfile createUser(UserProfile user) {
 		LOGGER.info("Creating new User with username: " + user.getUserName());
+		UserProfile dbUser = userProfileRepository.findByUserName(user.getUserName());
+		if(dbUser != null) {
+			LOGGER.error("User already exists with username: " + user.getUserName());
+			throw new EntityExistsException("User already exists with username: " + user.getUserName());
+		}
+		
+		dbUser = userProfileRepository.findByEmailId(user.getEmailId());
+		if(dbUser != null) {
+			LOGGER.error("User already exists with emaild: " + user.getEmailId());
+			throw new EntityExistsException("User already exists with username: " + user.getEmailId());
+		}
 		
 		userProfileRepository.save(user);
 		
@@ -48,7 +61,7 @@ final class UserServiceImpl implements UserService{
 		Optional<UserProfile> dbUser = userProfileRepository.findById(userId);
 		if(!dbUser.isPresent()) {
 			LOGGER.info("Could not find User with userid: " + userId);
-			return null;
+			throw new EntityNotFoundException("Could not find User with userid: " + userId);
 		}
 		
 		UserProfile updatedUser = updateUserHelper(dbUser.get(), user);	
@@ -76,6 +89,7 @@ final class UserServiceImpl implements UserService{
 		UserProfile dbUser = userProfileRepository.findById(userId).orElse(null);
 		if(dbUser == null) {
 			LOGGER.info("Could not find User with userid: " + userId);
+			throw new EntityNotFoundException("Could not find User with userid: " + userId);
 		}
 		return dbUser;
 	}
@@ -87,7 +101,7 @@ final class UserServiceImpl implements UserService{
 		UserProfile dbUser = userProfileRepository.findById(userId).orElse(null);
 		if(dbUser ==  null) {
 			LOGGER.info("Could not find User with userid: " + userId);
-			return null;
+			throw new EntityNotFoundException("Could not find User with userid: " + userId);
 		}
 		
 		userProfileRepository.delete(dbUser);
@@ -102,6 +116,7 @@ final class UserServiceImpl implements UserService{
 		UserProfile dbUser = userProfileRepository.findByUserName(userName);
 		if(dbUser == null) {
 			LOGGER.info("Could not find User with username: " + userName);
+			throw new EntityNotFoundException("Could not find User with username: " + userName);
 		}
 		return dbUser;
 	}
@@ -113,6 +128,7 @@ final class UserServiceImpl implements UserService{
 		UserProfile dbUser = userProfileRepository.findByEmailId(emailId);
 		if(dbUser == null) {
 			LOGGER.info("Could not find User with emailId: " + emailId);
+			throw new EntityNotFoundException("Could not find User with email id: " + emailId);
 		}
 		return dbUser;
 	}
