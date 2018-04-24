@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService{
 		dbUser = userProfileRepository.findByEmailId(user.getEmailId());
 		if(dbUser != null) {
 			LOGGER.error("User already exists with emaild: " + user.getEmailId());
-			throw new EntityExistsException("User already exists with username: " + user.getEmailId());
+			throw new EntityExistsException("User already exists with emailid: " + user.getEmailId());
 		}
 		
 		userProfileRepository.save(user);
