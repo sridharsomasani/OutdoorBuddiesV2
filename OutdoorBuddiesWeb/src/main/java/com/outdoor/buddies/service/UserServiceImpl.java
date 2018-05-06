@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.outdoor.buddies.jpa.entity.UserProfile;
 import com.outdoor.buddies.repository.UserProfileRepository;
 
+@Transactional(rollbackOn= {Exception.class})
 @Service
 public class UserServiceImpl implements UserService{
 	
@@ -31,7 +32,6 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile createUser(UserProfile user) {
 		LOGGER.info("Creating new User with username: " + user.getUserName());
@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService{
 		return user;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile updateUser(UserProfile user, Long userId) {
 		LOGGER.info("Updating User with userid: " + user.getUserId());
@@ -83,7 +82,6 @@ public class UserServiceImpl implements UserService{
 		return dbUser;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile findUser(Long userId) {
 		UserProfile dbUser = userProfileRepository.findById(userId).orElse(null);
@@ -94,7 +92,6 @@ public class UserServiceImpl implements UserService{
 		return dbUser;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile deleteUser(Long userId) {
 		LOGGER.info("Deleting User with userid: " + userId);
@@ -109,7 +106,6 @@ public class UserServiceImpl implements UserService{
 		return dbUser;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile findByUserName(String userName) {
 		LOGGER.info("Searching User with username: " + userName);
@@ -121,7 +117,6 @@ public class UserServiceImpl implements UserService{
 		return dbUser;
 	}
 
-	@Transactional
 	@Override
 	public UserProfile findByEmail(String emailId) {
 		LOGGER.info("Searching User with emailId: " + emailId);
