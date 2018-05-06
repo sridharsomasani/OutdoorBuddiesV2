@@ -9,7 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="ACTIVITY_PARTICIPANT")
@@ -20,27 +25,38 @@ public class ActivityParticipant {
 	private Long participantId;
 	
 	@ManyToOne
-	@JoinColumn(name="activityDetailsId")
-	private ActivityDetails activityDetails;
+	@JsonBackReference
+//	@JoinColumn(name="activityDetailsId")
+	private ActivityDetails activityDetailsId;
 	
 	@ManyToOne
-	@JoinColumn(name="userId")
+//	@JoinColumn(name="userId")
 	private UserProfile userProfile;
 	
 	@Column(columnDefinition="TINYINT(1) DEFAULT 0")
-	private Boolean accepted;
+	private Boolean accepted = false;
 	
 	@Column(columnDefinition="TINYINT(1) DEFAULT 0")
-	private Boolean attended;
+	private Boolean attended = false;
 
 	private String feedback;
-	
-	private Integer expertise;
 	
 	private Date createDate;
 	
 	private Date lastModified;
 
+    @PreUpdate
+    public void preUpdate() {
+    	lastModified = new Date();
+    }
+     
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        createDate = now;
+        lastModified = now;
+    }
+    
 	public Long getParticipantId() {
 		return participantId;
 	}
@@ -49,12 +65,12 @@ public class ActivityParticipant {
 		this.participantId = participantId;
 	}
 
-	public ActivityDetails getActivityDetails() {
-		return activityDetails;
+	public ActivityDetails getActivityDetailsId() {
+		return activityDetailsId;
 	}
 
-	public void setActivityDetails(ActivityDetails activityDetails) {
-		this.activityDetails = activityDetails;
+	public void setActivityDetailsId(ActivityDetails activityDetails) {
+		this.activityDetailsId = activityDetails;
 	}
 
 	public UserProfile getUserProfile() {
@@ -87,14 +103,6 @@ public class ActivityParticipant {
 
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
-	}
-
-	public Integer getExpertise() {
-		return expertise;
-	}
-
-	public void setExpertise(Integer expertise) {
-		this.expertise = expertise;
 	}
 
 	public Date getCreateDate() {
