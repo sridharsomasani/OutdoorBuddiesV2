@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +30,18 @@ public class Activity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 
+    @PreUpdate
+    public void preUpdate() {
+    	lastModified = new Date();
+    }
+     
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        createDate = now;
+        lastModified = now;
+    }
+	
 	public Long getActivityId() {
 		return activityId;
 	}
@@ -56,19 +70,10 @@ public class Activity {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public Date getLastModified() {
 		return lastModified;
 	}
 
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-	
 
-	
 	
 }
