@@ -1,6 +1,7 @@
 package com.outdoor.buddies.jpa.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,9 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="ACTIVITY_DETAILS")
@@ -21,9 +28,13 @@ public class ActivityDetails {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long activityDetailsId;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="activityId")
 	private Activity activity;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	//@JoinColumn(name="userId")
+	private UserProfile activityOwner;
 	
 	private Boolean isCompleted;
 	
@@ -41,8 +52,31 @@ public class ActivityDetails {
 	private Date createDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedDate;
+	private Date lastModified;
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="activityDetailsId")
+	@JsonManagedReference
+//	@JoinColumn(name="activityDetailsId")
+	private List<ActivityParticipant> participants;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="activityDetailsId")
+	@JsonManagedReference
+//	@JoinColumn(name="activityDetailsId")
+	private List<ActivityGallery> gallery;
 
+	
+    @PreUpdate
+    public void preUpdate() {
+    	lastModified = new Date();
+    }
+     
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        createDate = now;
+        lastModified = now;
+    }
+    
 	public Long getActivityDetailsId() {
 		return activityDetailsId;
 	}
@@ -107,12 +141,36 @@ public class ActivityDetails {
 		this.createDate = createDate;
 	}
 
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getLastModified() {
+		return lastModified;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
+	public Date setLastModified() {
+		return lastModified;
+	}
+
+	public UserProfile getActivityOwner() {
+		return activityOwner;
+	}
+
+	public void setActivityOwner(UserProfile activityOwner) {
+		this.activityOwner = activityOwner;
+	}
+
+	public List<ActivityParticipant> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<ActivityParticipant> participants) {
+		this.participants = participants;
+	}
+
+	public List<ActivityGallery> getGallery() {
+		return gallery;
+	}
+
+	public void setGallery(List<ActivityGallery> gallery) {
+		this.gallery = gallery;
 	}
 	
 	
