@@ -55,6 +55,8 @@ public class UserProfile {
 	
 	private String address;
 	
+	private Integer expertise;
+	
 	@JsonIgnoreProperties
 	private String imageUrl;
 	
@@ -86,7 +88,7 @@ public class UserProfile {
 	
 	private void setDefaultImage() {
         if(imageUrl == null || "".equals(imageUrl)) {
-        	String mGender = getGender().equals("Male") ? "/resources/static/male.jpg" : "/resources/static/female.jpg";
+        	String mGender = getGender().equals("Male") ? "/resources/images/male.jpg" : "/resources/images/female.jpg";
         	setImageUrl(mGender);
         }
 		
@@ -192,24 +194,21 @@ public class UserProfile {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public Date getLastModified() {
 		return lastModified;
-	}
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
 	}
 
 	public Date getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
+	public Integer getExpertise() {
+		return expertise;
 	}
+
+	public void setExpertise(Integer expertise) {
+		this.expertise = expertise;
+	}
+	
 	
 }
