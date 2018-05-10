@@ -15,7 +15,7 @@ pipeline {
 
             steps {
                 withMaven(maven : 'M3') {
-                    sh 'mvn test'
+                    sh 'mvn -f OutdoorBuddiesWeb/pom.xml test'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage ('Deployment Stage') {
             steps {
                 withMaven(maven : 'M3') {
-                    sh 'mvn deploy'
+                    sh 'mvn -f OutdoorBuddiesWeb/pom.xml deploy'
                 }
             }
         }
