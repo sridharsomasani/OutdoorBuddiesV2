@@ -15,7 +15,7 @@ pipeline {
         stage ('Deployment Stage') {
             steps {
                 withMaven(maven : 'M3') {
-                    sh 'mvn -f OutdoorBuddiesWeb/pom.xml deploy'
+                    sh 'mvn -f OutdoorBuddiesWeb/pom.xml spring-boot:run'
                 }
             }
         }
