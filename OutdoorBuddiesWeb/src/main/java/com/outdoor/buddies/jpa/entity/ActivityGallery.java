@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -15,7 +14,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="ACTIVITY_GALLERY")
@@ -27,7 +25,6 @@ public class ActivityGallery {
 	
 	@ManyToOne
 	@JsonBackReference
-//	@JoinColumn(name="activityDetailsId")
 	private ActivityDetails activityDetailsId;
 	
 	private String galleryItemDescription;
@@ -88,19 +85,8 @@ public class ActivityGallery {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public Date getLastModified() {
 		return lastModified;
 	}
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	
-	
 	
 }

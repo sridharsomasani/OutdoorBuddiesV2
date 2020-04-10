@@ -3,6 +3,7 @@ package com.outdoor.buddies.jpa.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -33,7 +33,7 @@ public class ActivityDetails {
 	private Activity activity;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	//@JoinColumn(name="userId")
+	@JoinColumn(name="userId", nullable=false)
 	private UserProfile activityOwner;
 	
 	private Boolean isCompleted;
@@ -54,14 +54,12 @@ public class ActivityDetails {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="activityDetailsId")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="activityDetailsId", cascade=CascadeType.ALL)
 	@JsonManagedReference
-//	@JoinColumn(name="activityDetailsId")
 	private List<ActivityParticipant> participants;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="activityDetailsId")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="activityDetailsId", cascade=CascadeType.ALL)
 	@JsonManagedReference
-//	@JoinColumn(name="activityDetailsId")
 	private List<ActivityGallery> gallery;
 
 	
@@ -137,15 +135,8 @@ public class ActivityDetails {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
 
 	public Date getLastModified() {
-		return lastModified;
-	}
-
-	public Date setLastModified() {
 		return lastModified;
 	}
 
@@ -164,6 +155,11 @@ public class ActivityDetails {
 	public void setParticipants(List<ActivityParticipant> participants) {
 		this.participants = participants;
 	}
+	
+	public void addParticipants(ActivityParticipant participant) {
+		participant.setActivityDetailsId(this);
+		participants.add(participant);
+	}
 
 	public List<ActivityGallery> getGallery() {
 		return gallery;
@@ -173,6 +169,10 @@ public class ActivityDetails {
 		this.gallery = gallery;
 	}
 	
+	public void addGallery(ActivityGallery gallery) {
+		gallery.setActivityDetailsId(this);
+		this.gallery.add(gallery);
+	}
 	
 	
 }
