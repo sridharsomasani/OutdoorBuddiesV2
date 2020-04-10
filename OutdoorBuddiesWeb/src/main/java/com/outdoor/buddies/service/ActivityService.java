@@ -9,27 +9,25 @@ import com.outdoor.buddies.jpa.entity.ActivityParticipant;
 
 public interface ActivityService {
 
-	public Set<ActivityDetails> getUserScheduledActivity(Long userId);
+	public ActivityDetails getActivityDetails(Long scheduleId);
 	
-	public ActivityDetails getScheduledActivity(Long scheduleId);
+	public ActivityDetails removeActivityDetails(Long scheduleId);
 	
-	public ActivityDetails removeScheduledActivity(Long scheduleId);
-	
-	public ActivityDetails updateScheduledActivity(Long scheduleId, ActivityDetails activityDetails);
+	public ActivityDetails updateActivityDetails(Long scheduleId, ActivityDetails activityDetails);
 	
 	public ActivityDetails createActivity(ActivityDetails details);
 	
-	public Set<ActivityParticipant> getScheduleParticipant(Long scheduleId);
+	public Set<ActivityParticipant> getActivityParticipant(Long scheduleId);
 	
 	public Set<ActivityParticipant> addParticipant(Long scheduleId, List<ActivityParticipant> activityParticipants);
 	
 	public Set<ActivityParticipant> removeParticipants(Long scheduleId, List<ActivityParticipant> activityParticipants);
 	
-	public Set<ActivityGallery> getScheduleGallery(Long scheduleId);
+	public Set<ActivityGallery> getActivityGallery(Long scheduleId);
 	
 	public Set<ActivityGallery> addGallery(Long scheduleId, List<ActivityGallery> activityGallery);
 	
 	public Set<ActivityGallery> removeGallery(Long scheduleId, List<ActivityGallery> activityGallery);
 	
-	public Set<ActivityDetails> findByUserActivityCustom(Long userId);
+	public Set<ActivityDetails> findActivityByUser(Long userId);
 }

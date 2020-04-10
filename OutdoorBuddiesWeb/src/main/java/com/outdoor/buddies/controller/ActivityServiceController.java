@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.outdoor.buddies.jpa.entity.ActivityDetails;
 import com.outdoor.buddies.jpa.entity.ActivityGallery;
 import com.outdoor.buddies.jpa.entity.ActivityParticipant;
-import com.outdoor.buddies.repository.ActivityDetailsRepository;
 import com.outdoor.buddies.service.ActivityService;
 
 @RestController
@@ -24,68 +23,66 @@ public class ActivityServiceController {
 	private ActivityService activityService;
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ActivityDetails scheduleActivity(@RequestBody ActivityDetails activityDetails){
+	public ActivityDetails createActivity(@RequestBody ActivityDetails activityDetails){
 		System.out.println( activityDetails);
-		ActivityDetails dbActivityDetails = activityService.createActivity(activityDetails);
-		return dbActivityDetails;
+		return activityService.createActivity(activityDetails);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}", method = RequestMethod.GET)
-	public ActivityDetails getScheduledActivity(@PathVariable("scheduleId") Long scheduleId){
-		return activityService.getScheduledActivity(scheduleId);
+	@RequestMapping(value = "/{activityId}", method = RequestMethod.GET)
+	public ActivityDetails getActivityDetails(@PathVariable("activityId") Long activityId){
+		return activityService.getActivityDetails(activityId);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}", method = RequestMethod.DELETE)
-	public ActivityDetails removeScheduledActivity(@PathVariable("scheduleId") Long scheduleId){
-		return activityService.removeScheduledActivity(scheduleId);
+	@RequestMapping(value = "/{activityId}", method = RequestMethod.DELETE)
+	public ActivityDetails removeActivityDetails(@PathVariable("activityId") Long activityId){
+		return activityService.removeActivityDetails(activityId);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}", method = RequestMethod.PUT)
-	public ActivityDetails updateScheduledActivity(@PathVariable("scheduleId") Long scheduleId, 
+	@RequestMapping(value = "/{activityId}", method = RequestMethod.PUT)
+	public ActivityDetails updateActivityDetails(@PathVariable("activityId") Long activityId, 
 				@RequestBody ActivityDetails activityDetails){
 		
-		return activityService.updateScheduledActivity(scheduleId, activityDetails);
+		return activityService.updateActivityDetails(activityId, activityDetails);
 	}
 	
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-	public Set<ActivityDetails> getUserScheduledActivity(@PathVariable("userId") Long userId){
-//		return activityService.getUserScheduledActivity(userId);
-		return activityService.findByUserActivityCustom(userId);
+	public Set<ActivityDetails> getActivityByUser(@PathVariable("userId") Long userId){
+		return activityService.findActivityByUser(userId);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/participants", method = RequestMethod.GET)
-	public Set<ActivityParticipant> getScheduleParticipant(@PathVariable("scheduleId") Long scheduleId){
-		return activityService.getScheduleParticipant(scheduleId);
+	@RequestMapping(value = "/{activityId}/participants", method = RequestMethod.GET)
+	public Set<ActivityParticipant> getParticipant(@PathVariable("activityId") Long activityId){
+		return activityService.getActivityParticipant(activityId);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/participants", method = RequestMethod.POST)
-	public Set<ActivityParticipant> addParticipant(@PathVariable("scheduleId") Long scheduleId, 
+	@RequestMapping(value = "/{activityId}/participants", method = RequestMethod.POST)
+	public Set<ActivityParticipant> addParticipant(@PathVariable("activityId") Long activityId, 
 				@RequestBody List<ActivityParticipant> activityParticipants){
 		
-		return activityService.addParticipant(scheduleId, activityParticipants);
+		return activityService.addParticipant(activityId, activityParticipants);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/participants", method = RequestMethod.DELETE)
-	public Set<ActivityParticipant> removeParticipant(@PathVariable("scheduleId") Long scheduleId, 
+	@RequestMapping(value = "/{activityId}/participants", method = RequestMethod.DELETE)
+	public Set<ActivityParticipant> removeParticipant(@PathVariable("activityId") Long activityId, 
 				@RequestBody List<ActivityParticipant> activityParticipants){
-		return activityService.removeParticipants(scheduleId, activityParticipants);
+		return activityService.removeParticipants(activityId, activityParticipants);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/gallery", method = RequestMethod.GET)
-	public Set<ActivityGallery> getGallery(@PathVariable("scheduleId") Long scheduleId){
-		return activityService.getScheduleGallery(scheduleId);
+	@RequestMapping(value = "/{activityId}/gallery", method = RequestMethod.GET)
+	public Set<ActivityGallery> getGallery(@PathVariable("activityId") Long activityId){
+		return activityService.getActivityGallery(activityId);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/gallery", method = RequestMethod.POST)
-	public Set<ActivityGallery> addGallery(@PathVariable("scheduleId") Long scheduleId, 
+	@RequestMapping(value = "/{activityId}/gallery", method = RequestMethod.POST)
+	public Set<ActivityGallery> addGallery(@PathVariable("activityId") Long activityId, 
 				@RequestBody List<ActivityGallery> gallery){
-		return activityService.addGallery(scheduleId, gallery);
+		return activityService.addGallery(activityId, gallery);
 	}
 	
-	@RequestMapping(value = "/{scheduleId}/gallery", method = RequestMethod.DELETE)
-	public Set<ActivityGallery> removeGallery(@PathVariable("scheduleId") Long scheduleId, 
+	@RequestMapping(value = "/{activityId}/gallery", method = RequestMethod.DELETE)
+	public Set<ActivityGallery> removeGallery(@PathVariable("activityId") Long activityId, 
 				@RequestBody List<ActivityGallery> gallery){
-		return activityService.removeGallery(scheduleId, gallery);
+		return activityService.removeGallery(activityId, gallery);
 	}
 	
 }
